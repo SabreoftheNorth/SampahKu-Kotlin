@@ -2,8 +2,11 @@ package com.example.sampahku
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Typeface
+import android.net.ConnectivityManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -11,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sampahku.ApiClient.service
@@ -26,6 +30,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var navProfil: LinearLayout? = null
     private var tblTukarPoin: LinearLayout? = null
 
+    // Broadcast Receiver
+    private val systemReceiver = SystemReceiver()
+
     // Education RecyclerView components
     private var rvEdukasi: RecyclerView? = null
     private var edukasiAdapter: EdukasiAdapter? = null
@@ -40,6 +47,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Inisialisasi Channel Notifikasi
+        NotificationHelper.createNotificationChannel(this)
+        requestNotificationPermission()
+
         if (supportActionBar != null) {
             supportActionBar!!.hide()
         }
@@ -50,6 +61,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         navStatistik = findViewById(R.id.nav_statistik)
         navProfil = findViewById(R.id.nav_profil)
         val ivProfile = findViewById<ImageView>(R.id.iv_profile)
+        val ivNotif = findViewById<ImageView>(R.id.iv_notif)
         tblTukarPoin = findViewById(R.id.btn_tukar_poin)
 
         // Education toggle and RV
@@ -68,6 +80,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             startActivity(Intent(this@MainActivity, ProfilActivity::class.java))
         }
 
+        // Fitur Tambahan: Klik ikon lonceng untuk test notifikasi (IDE 1)
+        ivNotif.setOnClickListener {
+            NotificationHelper.sendNotification(
+                this,
+                "Halo Rakha!",
+                "Jangan lupa setor sampahmu hari ini ya!"
+            )
+        }
+
         // Load saved view type for education
         val savedViewType = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .getInt(KEY_EDUKASI_VIEW_TYPE, EdukasiAdapter.VIEW_TYPE_LIST)
@@ -78,6 +99,40 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setupAktivitasItems()
         fetchEdukasiItems()
         setActiveNav()
+    }
+
+    /**
+     * Mendaftarkan Broadcast Receiver secara dinamis saat Activity aktif
+     */
+    override fun onStart() {
+        super.onStart()
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+            @Suppress("DEPRECATION")
+            addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+        }
+        registerReceiver(systemReceiver, filter)
+    }
+
+    /**
+     * Melepaskan Broadcast Receiver saat Activity tidak terlihat untuk menghemat baterai
+     */
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(systemReceiver)
+    }
+
+    /**
+     * Meminta izin notifikasi untuk Android 13+
+     */
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                101
+            )
+        }
     }
 
     private fun setupEdukasiRecyclerView(viewType: Int) {
