@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="#FAFAFA">
 
-    <!--main contennya dalam bentuk scrollView-->
     <ScrollView
         android:id="@+id/scroll_main"
         android:layout_width="match_parent"
@@ -20,10 +21,9 @@
             android:orientation="vertical"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:paddingTop="48dp"
+            android:paddingTop="56dp"
             android:paddingBottom="24dp">
 
-            <!-- header "Halo, Rakha" dan motif-motif lainnya-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -51,7 +51,6 @@
                         android:fontFamily="@font/plus_jakarta_sans_regular" />
                 </LinearLayout>
 
-                <!-- //ikon notifikasi dan profil-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -62,20 +61,22 @@
 
                     <ImageView
                         android:id="@+id/iv_notif"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:src="@drawable/ic_bell"
-                        android:padding="6dp"
+                        android:padding="8dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="Notifikasi" />
 
-                    <ImageView
+                    <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/iv_profile"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_circle_gray"
                         android:src="@drawable/ic_user"
                         android:padding="8dp"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                        android:background="@color/gray_light"
                         android:contentDescription="Profil"
                         android:clickable="true"
                         android:focusable="true"/>
@@ -83,136 +84,137 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <!--card utk menunjukkan total poin yang sekarang dimiliki -->
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_card_green"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:layout_marginTop="24dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/green_primary"
+                app:strokeWidth="0dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/total_points"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/plus_jakarta_sans_semibold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="5000 Poin"
-                    android:textColor="#FFEB3B"
-                    android:textSize="32sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/plus_jakarta_sans_bold" />
-
-                <!-- tombol yg muncul utk menukar poin -->
                 <LinearLayout
-                    android:id="@+id/btn_tukar_poin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/bg_button_pill_dark"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp">
+                    android:layout_width="match_parent"
+                    android:padding="24dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/tukar_poin"
+                        android:text="@string/total_points"
                         android:textColor="@color/white"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
+                        android:alpha="0.8"
                         android:fontFamily="@font/plus_jakarta_sans_semibold" />
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="8dp"
-                        android:src="@drawable/ic_arrow_right_circle"
-                        android:contentDescription="@string/tukar_poin" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="5.000 Poin"
+                        android:textColor="#FFEB3B"
+                        android:textSize="36sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/plus_jakarta_sans_bold" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_tukar_poin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/tukar_poin"
+                        android:textColor="@color/white"
+                        android:textAllCaps="false"
+                        app:backgroundTint="@color/green_dark"
+                        app:cornerRadius="10dp"
+                        app:icon="@drawable/ic_arrow_right_circle"
+                        app:iconGravity="end"
+                        android:fontFamily="@font/plus_jakarta_sans_semibold" />
                 </LinearLayout>
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- card utk "Aktivitas Baru"-->
-            <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"
+                android:text="@string/aktivitas_terbaru"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/plus_jakarta_sans_bold" />
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_card_green"
-                android:orientation="vertical"
-                android:padding="16dp">
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/gray_border">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <include
+                        layout="@layout/item_aktivitas"
+                        android:id="@+id/item_kain" />
+
+                    <include
+                        layout="@layout/item_aktivitas"
+                        android:id="@+id/item_botol" />
+
+                    <include
+                        layout="@layout/item_aktivitas"
+                        android:id="@+id/item_kertas" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Education Section Header with Toggle -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/aktivitas_terbaru"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/plus_jakarta_sans_bold" />
-
-                <!-- ITEM ITEMNYA YA GAIS -->
-                <!-- Kain/Cacahan -->
-                <include
-                    layout="@layout/item_aktivitas"
-                    android:id="@+id/item_kain" />
-
-                <!--Botol Plastik -->
-                <include
-                    layout="@layout/item_aktivitas"
-                    android:id="@+id/item_botol" />
-
-                <!-- Kertas Koran -->
-                <include
-                    layout="@layout/item_aktivitas"
-                    android:id="@+id/item_kertas" />
-            </LinearLayout>
-
-            <!-- Card untuk fitur edukasi ttg daur ulang -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_card_green"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:text="@string/edukasi_daur_ulang"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:fontFamily="@font/plus_jakarta_sans_bold" />
 
-                <!-- Item Edukasi 1 -->
-                <include
-                    layout="@layout/item_edukasi"
-                    android:id="@+id/item_edukasi_1" />
+                <ImageView
+                    android:id="@+id/iv_edukasi_toggle"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_view_list"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Ganti Tampilan Edukasi" />
+            </RelativeLayout>
 
-                <!-- Item Edukasi 2 -->
-                <include
-                    layout="@layout/item_edukasi"
-                    android:id="@+id/item_edukasi_2" />
+            <!-- RECYCLERVIEW FOR EDUCATION -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_edukasi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_edukasi_list" />
 
-                <!-- Item Edukasi 3 WEEEEEEEEEEEEEEEEEEEEEEEEEE-->
-                <include
-                    layout="@layout/item_edukasi"
-                    android:id="@+id/item_edukasi_3" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <!-- navbar -->
     <include
         layout="@layout/bottom_navigation"
         android:id="@+id/bottom_nav"

@@ -24,15 +24,9 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     private var editConfirmPassword: EditText? = null
     private var btnRegister: Button? = null
     private var tvLogin: TextView? = null
-    private var ivTogglePassword: ImageView? = null
-    private var ivToggleConfirmPassword: ImageView? = null
     private var ivGoogle: ImageView? = null
     private var ivApple: ImageView? = null
     private var ivBack: ImageView? = null // tombol back hijau utk balik ke halaman login
-
-
-    private var isPasswordVisible = false
-    private var isConfirmPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +45,6 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         editConfirmPassword = findViewById<EditText>(R.id.edt_confirm_password)
         btnRegister = findViewById<Button>(R.id.btn_register)
         tvLogin = findViewById<TextView>(R.id.tv_login)
-        ivTogglePassword = findViewById<ImageView>(R.id.iv_toggle_password)
-        ivToggleConfirmPassword = findViewById<ImageView>(R.id.iv_toggle_confirm_password)
         ivGoogle = findViewById<ImageView>(R.id.iv_google)
         ivApple = findViewById<ImageView>(R.id.iv_apple)
         ivBack = findViewById<ImageView>(R.id.iv_back)
@@ -60,8 +52,6 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         // setOnClickListener
         btnRegister!!.setOnClickListener(this)
         tvLogin!!.setOnClickListener(this)
-        ivTogglePassword!!.setOnClickListener(this)
-        ivToggleConfirmPassword!!.setOnClickListener(this)
         ivGoogle!!.setOnClickListener(this)
         ivApple!!.setOnClickListener(this)
         ivBack!!.setOnClickListener(this)
@@ -79,12 +69,8 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
             val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
-        } else if (v.getId() == R.id.iv_toggle_password) {
-            togglePasswordVisibility()
         } else if (v.getId() == R.id.iv_back) {
             finish() // Kembali ke halaman sebelumnya (LoginActivity)
-        } else if (v.getId() == R.id.iv_toggle_confirm_password) {
-            toggleConfirmPasswordVisibility()
         }
     }
 
@@ -142,33 +128,5 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                     ).show()
                 }
             })
-    }
-
-    // toggle password on/off
-    // sama dgn yang ada di halaman login
-    private fun togglePasswordVisibility() {
-        if (isPasswordVisible) {
-            editPassword!!.setTransformationMethod(PasswordTransformationMethod.getInstance())
-            ivTogglePassword!!.setImageResource(R.drawable.ic_eye_off)
-            isPasswordVisible = false
-        } else {
-            editPassword!!.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
-            ivTogglePassword!!.setImageResource(R.drawable.ic_eye_on)
-            isPasswordVisible = true
-        }
-        editPassword!!.setSelection(editPassword!!.getText().length)
-    }
-
-    private fun toggleConfirmPasswordVisibility() {
-        if (isConfirmPasswordVisible) {
-            editConfirmPassword!!.setTransformationMethod(PasswordTransformationMethod.getInstance())
-            ivToggleConfirmPassword!!.setImageResource(R.drawable.ic_eye_off)
-            isConfirmPasswordVisible = false
-        } else {
-            editConfirmPassword!!.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
-            ivToggleConfirmPassword!!.setImageResource(R.drawable.ic_eye_on)
-            isConfirmPasswordVisible = true
-        }
-        editConfirmPassword!!.setSelection(editConfirmPassword!!.getText().length)
     }
 }

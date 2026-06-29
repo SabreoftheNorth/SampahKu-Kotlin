@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -12,10 +13,9 @@
         android:orientation="vertical"
         android:paddingStart="24dp"
         android:paddingEnd="24dp"
-        android:paddingTop="48dp"
+        android:paddingTop="64dp"
         android:paddingBottom="24dp">
 
-    <!--title and subtitle yang sesuai dgn file figma-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,83 +28,50 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:text="@string/login_subtitle"
             android:textColor="@color/gray_text"
             android:textSize="14sp"
             android:fontFamily="@font/plus_jakarta_sans_regular" />
 
-        <!-- field pengisian email -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/label_email"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/plus_jakarta_sans_semibold" />
-
-        <EditText
-            android:id="@+id/edt_email"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_input_field"
-            android:hint="@string/hint_email"
-            android:inputType="textEmailAddress"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textSize="14sp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray_hint"
-            android:fontFamily="@font/plus_jakarta_sans_regular"
-            android:lines="1" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:hint="@string/label_email"
+            app:boxStrokeColor="@color/green_primary"
+            app:hintTextColor="@color/green_primary">
 
-        <!-- untuk field pengisian password -->
-        <TextView
-            android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:fontFamily="@font/plus_jakarta_sans_regular" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/label_password"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/plus_jakarta_sans_semibold" />
+            android:hint="@string/label_password"
+            app:boxStrokeColor="@color/green_primary"
+            app:hintTextColor="@color/green_primary"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/gray_text">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="8dp">
-
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_password"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_input_field"
-                android:hint="@string/hint_password"
+                android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:paddingStart="16dp"
-                android:paddingEnd="52dp"
-                android:textSize="14sp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray_hint"
-                android:fontFamily="@font/plus_jakarta_sans_regular"
-                android:lines="1" />
+                android:fontFamily="@font/plus_jakarta_sans_regular" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Tombol show/hide password -->
-            <ImageView
-                android:id="@+id/iv_toggle_password"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_eye_off"
-                android:contentDescription="@string/toggle_password" />
-        </RelativeLayout>
-
-        <!-- tombol "ingat saya" dan "lupa kata sandi?" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,14 +79,14 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/rb_remember"
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cb_remember"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/green_primary"
                 android:text="@string/remember_me"
                 android:textColor="@color/gray_text"
                 android:textSize="13sp"
+                app:buttonTint="@color/green_primary"
                 android:fontFamily="@font/plus_jakarta_sans_regular" />
 
             <View
@@ -137,26 +104,23 @@
                 android:fontFamily="@font/plus_jakarta_sans_semibold" />
         </LinearLayout>
 
-        <!-- tombol untuk "MASUK" -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="56dp"
             android:layout_marginTop="24dp"
-            android:background="@drawable/bg_button_green"
             android:text="@string/btn_login"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:letterSpacing="0.08"
+            android:textAllCaps="false"
+            android:textSize="16sp"
             android:textStyle="bold"
+            app:cornerRadius="12dp"
+            android:backgroundTint="@color/green_primary"
             android:fontFamily="@font/plus_jakarta_sans_bold" />
 
-        <!-- divider "atau masuk dengan" -->
-        <!-- transisi ke login pakai google/apple -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <View
@@ -167,8 +131,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/or_login_with"
                 android:textColor="@color/gray_text"
                 android:textSize="13sp"
@@ -180,40 +144,57 @@
                 android:background="@color/gray_divider" />
         </LinearLayout>
 
-        <!-- ini tombol dipakai untuk login dengan apple/google -->
-        <!-- semoga bisa -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/iv_google"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:src="@drawable/ic_google"
-                android:contentDescription="Login dengan Google"
-                android:padding="6dp" />
-            <ImageView
-                android:id="@+id/iv_apple"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:src="@drawable/ic_apple"
-                android:contentDescription="Login dengan Apple"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_google"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/gray_border">
+                <ImageView
+                    android:id="@+id/iv_google"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_google"
+                    android:padding="14dp"
+                    android:scaleType="centerInside"
+                    android:contentDescription="Google Login" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_apple"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_marginStart="24dp"
-                android:padding="6dp" />
+                app:cardCornerRadius="28dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/gray_border">
+                <ImageView
+                    android:id="@+id/iv_apple"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_apple"
+                    android:padding="14dp"
+                    android:scaleType="centerInside"
+                    android:contentDescription="Apple Login" />
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <!-- tombol untuk "Belum Punya Akun?" -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="24dp"
             android:orientation="horizontal">
 
             <TextView
@@ -237,4 +218,3 @@
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
-

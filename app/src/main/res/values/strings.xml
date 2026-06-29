@@ -77,4 +77,17 @@
 
     <!-- HALAMAN PROFILLLLLLLLLLLLLL -->
     <string name="profil_title">Profil</string>
+
+    <!-- NOTIFIKASI DAN BROADCAST RECEIVER -->
+    <string name="notif_channel_name">Notifikasi SampahKu</string>
+    <string name="notif_battery_title">Baterai Lemah!</string>
+    <string name="notif_battery_msg">Segera tukarkan poinmu atau simpan QR-mu sebelum HP mati.</string>
+    <string name="notif_power_title">HP Di-cas!</string>
+    <string name="notif_power_msg">Terima kasih sudah mengisi daya. Yuk cek poinmu hari ini!</string>
+    <string name="notif_airplane_title">Mode Pesawat Berubah</string>
+    <string name="notif_airplane_msg">Koneksi Anda berubah. Pastikan tetap online untuk sinkronisasi poin.</string>
+    <string name="notif_network_online_title">Kembali Online</string>
+    <string name="notif_network_online_msg">Koneksi internet tersedia. Data Anda siap disinkronkan.</string>
+    <string name="notif_network_offline_title">Koneksi Terputus</string>
+    <string name="notif_network_offline_msg">Anda sedang offline. Beberapa fitur mungkin tidak tersedia.</string>
 </resources>
