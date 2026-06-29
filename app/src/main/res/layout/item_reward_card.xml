@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/gray_border">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tv_reward_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gopay Coins Rp 10.000"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/plus_jakarta_sans_bold" />
+
+        <TextView
+            android:id="@+id/tv_reward_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Tukarkan Voucher di Aplikasi Gopay"
+            android:textColor="@color/gray_text"
+            android:textSize="14sp"
+            android:fontFamily="@font/plus_jakarta_sans_regular" />
+
+        <TextView
+            android:id="@+id/tv_reward_points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="100 Poin"
+            android:textColor="@color/green_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/plus_jakarta_sans_bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <ImageView
+                android:id="@+id/iv_reward_logo"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/logo_gopay"
+                android:scaleType="fitStart"
+                android:contentDescription="Logo merchant" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_tukar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="Tukar"
+                android:textColor="@color/green_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/green_card"
+                app:cornerRadius="24dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:fontFamily="@font/plus_jakarta_sans_bold" />
+        </RelativeLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
