@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var navQr: View? = null
     private var navStatistik: LinearLayout? = null
     private var navProfil: LinearLayout? = null
-    private var tblTukarPoin: LinearLayout? = null
+    private var tblTukarPoin: View? = null
 
     // Broadcast Receiver
     private val systemReceiver = SystemReceiver()
