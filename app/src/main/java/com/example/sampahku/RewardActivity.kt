@@ -1,5 +1,6 @@
 package com.example.sampahku
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
@@ -10,21 +11,28 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.sampahku.ApiClient.service
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.min
 
-// apa perlu ya?
-//agar bisa intent implicit
 class RewardActivity : AppCompatActivity(), View.OnClickListener {
     private var ivBack: ImageView? = null
+    private var ivViewToggle: ImageView? = null
+    private var rvRewards: RecyclerView? = null
+    private var adapter: RewardAdapter? = null
+    private var rewardList: MutableList<RewardResponse> = mutableListOf()
+
+    // Preferences key
+    private val PREFS_NAME = "RewardPrefs"
+    private val KEY_VIEW_TYPE = "view_type"
 
     // list navbar isinya
     private var navHome: LinearLayout? = null
     private var navReward: LinearLayout? = null
-    private var navQr: LinearLayout? = null
+    private var navQr: View? = null
     private var navStatistik: LinearLayout? = null
     private var navProfil: LinearLayout? = null
 
@@ -36,22 +44,29 @@ class RewardActivity : AppCompatActivity(), View.OnClickListener {
             getSupportActionBar()!!.hide()
         }
 
-        // inisialisasi tombol back
-        // masih bermasalah sih...
-        // NVM.. FIXED!
-        ivBack = findViewById<ImageView>(R.id.iv_back)
-        ivBack!!.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                finish()
-            }
-        })
+        ivBack = findViewById(R.id.iv_back)
+        ivBack!!.setOnClickListener { finish() }
+
+        ivViewToggle = findViewById(R.id.iv_view_toggle)
+        ivViewToggle!!.setOnClickListener { toggleViewMode() }
+
+        rvRewards = findViewById(R.id.rv_rewards)
+
+        // Load saved view type
+        val savedViewType = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getInt(KEY_VIEW_TYPE, RewardAdapter.VIEW_TYPE_LIST)
+
+        updateToggleIcon(savedViewType)
+
+        // Setup RecyclerView with saved view type
+        setupRecyclerView(savedViewType)
 
         // inisialisasi bottom navigation bar
-        navHome = findViewById<LinearLayout>(R.id.nav_home)
-        navReward = findViewById<LinearLayout>(R.id.nav_reward)
-        navQr = findViewById<LinearLayout>(R.id.nav_qr)
-        navStatistik = findViewById<LinearLayout>(R.id.nav_statistik)
-        navProfil = findViewById<LinearLayout>(R.id.nav_profil)
+        navHome = findViewById(R.id.nav_home)
+        navReward = findViewById(R.id.nav_reward)
+        navQr = findViewById(R.id.nav_qr)
+        navStatistik = findViewById(R.id.nav_statistik)
+        navProfil = findViewById(R.id.nav_profil)
 
         navHome!!.setOnClickListener(this)
         navReward!!.setOnClickListener(this)
@@ -59,105 +74,101 @@ class RewardActivity : AppCompatActivity(), View.OnClickListener {
         navStatistik!!.setOnClickListener(this)
         navProfil!!.setOnClickListener(this)
 
-        // set data untuk item-item rewardnya
-        setupRewardItems()
-        setActiveNav() // untuk navbar ganti warna ketika di halaman reward
+        fetchRewards()
+        setActiveNav()
+    }
+
+    private fun setupRecyclerView(viewType: Int) {
+        val spanCount = if (viewType == RewardAdapter.VIEW_TYPE_GRID) 2 else 1
+        rvRewards!!.layoutManager = GridLayoutManager(this, spanCount)
+        
+        adapter = RewardAdapter(rewardList, viewType) { reward ->
+            if (reward.logoResourceName?.contains("gopay") == true) {
+                bukaGopay()
+            } else {
+                Toast.makeText(this, "Menukarkan ${reward.namaReward}", Toast.LENGTH_SHORT).show()
+            }
+        }
+        rvRewards!!.adapter = adapter
+    }
+
+    private fun toggleViewMode() {
+        val currentViewType = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getInt(KEY_VIEW_TYPE, RewardAdapter.VIEW_TYPE_LIST)
+
+        val nextViewType = when (currentViewType) {
+            RewardAdapter.VIEW_TYPE_LIST -> RewardAdapter.VIEW_TYPE_GRID
+            RewardAdapter.VIEW_TYPE_GRID -> RewardAdapter.VIEW_TYPE_CARD
+            RewardAdapter.VIEW_TYPE_CARD -> RewardAdapter.VIEW_TYPE_LIST
+            else -> RewardAdapter.VIEW_TYPE_LIST
+        }
+
+        // Save new view type
+        getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putInt(KEY_VIEW_TYPE, nextViewType)
+            .apply()
+
+        updateToggleIcon(nextViewType)
+
+        // Update layout manager span count
+        val spanCount = if (nextViewType == RewardAdapter.VIEW_TYPE_GRID) 2 else 1
+        (rvRewards!!.layoutManager as GridLayoutManager).spanCount = spanCount
+        
+        // Update adapter view type
+        adapter?.updateViewType(nextViewType)
+    }
+
+    private fun updateToggleIcon(viewType: Int) {
+        val iconRes = when (viewType) {
+            RewardAdapter.VIEW_TYPE_LIST -> R.drawable.ic_view_list
+            RewardAdapter.VIEW_TYPE_GRID -> R.drawable.ic_view_grid
+            RewardAdapter.VIEW_TYPE_CARD -> R.drawable.ic_view_card
+            else -> R.drawable.ic_view_list
+        }
+        ivViewToggle!!.setImageResource(iconRes)
     }
 
     override fun onClick(v: View) {
-        if (v.getId() == R.id.nav_home) {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            startActivity(intent)
-        } else if (v.getId() == R.id.nav_reward) {
-            // sudah di Reward, jadi ya...
-            Toast.makeText(this, "Reward", Toast.LENGTH_SHORT).show()
-        } else if (v.getId() == R.id.nav_qr) {
-            startActivity(Intent(this@RewardActivity, QrActivity::class.java))
-        } else if (v.getId() == R.id.nav_statistik) {
-            startActivity(Intent(this@RewardActivity, StatistikActivity::class.java))
-        } else if (v.getId() == R.id.nav_profil) {
-            startActivity(Intent(this@RewardActivity, ProfilActivity::class.java))
+        when (v.id) {
+            R.id.nav_home -> {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                startActivity(intent)
+            }
+            R.id.nav_reward -> Toast.makeText(this, "Reward", Toast.LENGTH_SHORT).show()
+            R.id.nav_qr -> startActivity(Intent(this, QrActivity::class.java))
+            R.id.nav_statistik -> startActivity(Intent(this, StatistikActivity::class.java))
+            R.id.nav_profil -> startActivity(Intent(this, ProfilActivity::class.java))
         }
     }
 
-    // ini utk melakukan set data untuk semua item reward
-    // (tapi karena udh pakai <include>, kita override datanya di sini)
-    private fun setupRewardItems() {
-        val itemLast = findViewById<View?>(R.id.item_last_reward)
-        val item1 = findViewById<View?>(R.id.item_reward_1)
-        val item2 = findViewById<View?>(R.id.item_reward_2)
-        val item3 = findViewById<View?>(R.id.item_reward_3)
-
-        val itemViews = arrayOf<View>(itemLast!!, item1!!, item2!!, item3!!)
-
+    private fun fetchRewards() {
         service.reward!!.enqueue(object : Callback<MutableList<RewardResponse?>?> {
             override fun onResponse(
                 call: Call<MutableList<RewardResponse?>?>,
                 response: Response<MutableList<RewardResponse?>?>
             ) {
-                if (response.isSuccessful() && response.body() != null) {
-                    val list: List<RewardResponse> = response.body()!!.filterNotNull()
-
-                    for (i in 0..<min(list.size, itemViews.size)) {
-                        val reward = list.get(i)
-                        val itemView = itemViews[i]
-
-                        (itemView.findViewById<View?>(R.id.tv_reward_name) as TextView).setText(
-                            reward.namaReward
-                        )
-                        (itemView.findViewById<View?>(R.id.tv_reward_desc) as TextView).setText(
-                            reward.deskripsi
-                        )
-                        (itemView.findViewById<View?>(R.id.tv_reward_points) as TextView).setText(
-                            reward.poinDibutuhkan.toString() + " Poin"
-                        )
-
-                        val resId = getResources().getIdentifier(
-                            reward.logoResourceName,
-                            "drawable",
-                            getPackageName()
-                        )
-                        if (resId != 0) {
-                            (itemView.findViewById<View?>(R.id.iv_reward_logo) as ImageView).setImageResource(
-                                resId
-                            )
-                        }
-
-                        if (reward.logoResourceName?.contains("gopay") == true) {
-                            itemView.findViewById<View?>(R.id.btn_tukar)
-                                .setOnClickListener(View.OnClickListener { v: View? -> bukaGopay() })
-                        }
-                    }
+                if (response.isSuccessful && response.body() != null) {
+                    val list = response.body()!!.filterNotNull()
+                    rewardList.clear()
+                    rewardList.addAll(list)
+                    adapter?.updateData(rewardList)
                 }
             }
 
-            override fun onFailure(call: Call<MutableList<RewardResponse?>?>, t: Throwable) {}
+            override fun onFailure(call: Call<MutableList<RewardResponse?>?>, t: Throwable) {
+                Toast.makeText(this@RewardActivity, "Gagal memuat reward", Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
-    /*
-     * jadi ini bentuk implicit intent untuk membuka aplikasi GoPay.
-     * "aplikasi" padahal cuma websitenya saja
-     * kalau terinstall ya, akan langsung kebuka app-nya.
-     */
     private fun bukaGopay() {
-        // coba buka app GoPay langsung via deep link (kalau ada)
-        val intent = Intent(
-            Intent.ACTION_VIEW,
-            Uri.parse("gojek://gopay")
-        )
-
-        // cek apa ada app yang bisa handle intent ini
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent) // maka buka app GoPay
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("gojek://gopay"))
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
         } else {
-            // fallback: buka browser ke website GoPay
-            val browser = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("https://gopay.co.id")
-            )
-            startActivity(browser)
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://gopay.co.id")))
         }
     }
 
@@ -169,19 +180,16 @@ class RewardActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setNavColor(navId: Int, colorRes: Int, typefaceStyle: Int) {
-        val tab = findViewById<LinearLayout?>(navId)
-        if (tab == null) return
-        for (i in 0..<tab.getChildCount()) {
-            val child = tab.getChildAt(i)
-            if (child is ImageView) {
-                child.setColorFilter(
-                    getResources().getColor(colorRes, getTheme())
-                )
-            } else if (child is TextView) {
-                child.setTextColor(
-                    getResources().getColor(colorRes, getTheme())
-                )
-                child.setTypeface(null, typefaceStyle)
+        val tab = findViewById<View?>(navId) ?: return
+        if (tab is LinearLayout) {
+            for (i in 0 until tab.childCount) {
+                val child = tab.getChildAt(i)
+                if (child is ImageView) {
+                    child.setColorFilter(getColor(colorRes))
+                } else if (child is TextView) {
+                    child.setTextColor(getColor(colorRes))
+                    child.setTypeface(null, typefaceStyle)
+                }
             }
         }
     }

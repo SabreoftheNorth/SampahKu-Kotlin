@@ -1,162 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- navbar menggunakan relative & layout-->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:elevation="8dp">
+    app:cardCornerRadius="0dp"
+    app:cardElevation="16dp"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="72dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp">
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:background="@color/white">
 
-        <!-- tombol home -->
         <LinearLayout
             android:id="@+id/nav_home"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_home"
-                android:contentDescription="Home" />
+                android:contentDescription="Home"
+                app:tint="@color/green_primary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:text="Home"
                 android:textColor="@color/green_primary"
-                android:textSize="10sp"
+                android:textSize="11sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/plus_jakarta_sans_semibold" />
-
         </LinearLayout>
 
-        <!-- reward -->
         <LinearLayout
             android:id="@+id/nav_reward"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_gift"
-                android:contentDescription="Reward" />
+                android:contentDescription="Reward"
+                app:tint="@color/gray_text" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:text="Reward"
                 android:textColor="@color/gray_text"
-                android:textSize="10sp"
+                android:textSize="11sp"
                 android:fontFamily="@font/plus_jakarta_sans_regular" />
-
         </LinearLayout>
 
-        <!-- QR code di tengah, tapi masalahnya kalau pakai tulisan ya jadi susah gitu -->
-        <!-- AAAAAAAAAARGHHH -->
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/nav_qr"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
             android:gravity="center"
-            android:orientation="vertical">
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
-            <!-- tombol QR menonjol di tengah -->
-            <FrameLayout
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:layout_marginTop="-10dp"
-                android:background="@drawable/bg_circle_green">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="QR Code"
-                    android:src="@drawable/ic_qr_code" />
-
-            </FrameLayout>
-
-            <!-- me dont know what to do so me comment -->
-            <!--
-            <TextView
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_qr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="QR Code"
-                android:textColor="@color/gray_text"
-                android:textSize="10sp"
-                android:fontFamily="@font/plus_jakarta_sans_regular" />
-                -->
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_qr_code"
+                app:backgroundTint="@color/green_primary"
+                app:tint="@color/white"
+                app:fabSize="normal"
+                app:elevation="6dp"
+                android:contentDescription="QR Code"
+                android:clickable="false"
+                android:focusable="false" />
+        </RelativeLayout>
 
-        </LinearLayout>
-
-        <!-- STATISTIK-eh -->
         <LinearLayout
             android:id="@+id/nav_statistik"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_chart"
-                android:contentDescription="Statistik" />
+                android:contentDescription="Statistik"
+                app:tint="@color/gray_text" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:text="Statistik"
                 android:textColor="@color/gray_text"
-                android:textSize="10sp"
+                android:textSize="11sp"
                 android:fontFamily="@font/plus_jakarta_sans_regular" />
-
         </LinearLayout>
 
-        <!-- PROFIL-eh -->
         <LinearLayout
             android:id="@+id/nav_profil"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_user"
-                android:contentDescription="Profil" />
+                android:contentDescription="Profil"
+                app:tint="@color/gray_text" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:text="Profil"
                 android:textColor="@color/gray_text"
-                android:textSize="10sp"
+                android:textSize="11sp"
                 android:fontFamily="@font/plus_jakarta_sans_regular" />
-
         </LinearLayout>
     </LinearLayout>
-</RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

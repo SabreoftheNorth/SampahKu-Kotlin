@@ -26,11 +26,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private var btnLogin: Button? = null
     private var tvFgtPassword: TextView? = null
     private var tvRegister: TextView? = null
-    private var ivTogglePassword: ImageView? = null
     private var ivGoogle: ImageView? = null
     private var ivApple: ImageView? = null
-
-    private var isPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +45,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         btnLogin = findViewById<Button>(R.id.btn_login)
         tvFgtPassword = findViewById<TextView>(R.id.tv_forgot_password)
         tvRegister = findViewById<TextView>(R.id.tv_register)
-        ivTogglePassword = findViewById<ImageView>(R.id.iv_toggle_password)
         ivGoogle = findViewById<ImageView>(R.id.iv_google)
         ivApple = findViewById<ImageView>(R.id.iv_apple)
 
@@ -56,7 +52,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         btnLogin!!.setOnClickListener(this)
         tvFgtPassword!!.setOnClickListener(this)
         tvRegister!!.setOnClickListener(this)
-        ivTogglePassword!!.setOnClickListener(this)
         ivGoogle!!.setOnClickListener(this)
         ivApple!!.setOnClickListener(this)
     }
@@ -82,8 +77,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         } else if (v.getId() == R.id.tv_register) {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
-        } else if (v.getId() == R.id.iv_toggle_password) {
-            togglePasswordVisibility()
         }
     }
 
@@ -165,21 +158,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 }
             })
         }
-    }
-
-    // toggle password on/off
-    // implementasinya sama di halaman register
-    private fun togglePasswordVisibility() {
-        if (isPasswordVisible) {
-            editPassword!!.setTransformationMethod(PasswordTransformationMethod.getInstance())
-            ivTogglePassword!!.setImageResource(R.drawable.ic_eye_off)
-            isPasswordVisible = false
-        } else {
-            editPassword!!.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
-            ivTogglePassword!!.setImageResource(R.drawable.ic_eye_on)
-            isPasswordVisible = true
-        }
-        editPassword!!.setSelection(editPassword!!.getText().length)
     }
 
     companion object {
