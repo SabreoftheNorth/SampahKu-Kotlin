@@ -22,7 +22,7 @@ class ProfilActivity : AppCompatActivity(), View.OnClickListener {
     // ini adalah navbar, navbar punya home, reward, qr, statistik, profil
     private var navHome: LinearLayout? = null
     private var navReward: LinearLayout? = null
-    private var navQr: LinearLayout? = null
+    private var navQr: View? = null
     private var navStatistik: LinearLayout? = null
     private var navProfil: LinearLayout? = null
 
@@ -132,11 +132,11 @@ class ProfilActivity : AppCompatActivity(), View.OnClickListener {
         })
 
         // findviewbyid tapi ini depresi :(
-        navHome = findViewById<LinearLayout>(R.id.nav_home)
-        navReward = findViewById<LinearLayout>(R.id.nav_reward)
-        navQr = findViewById<LinearLayout>(R.id.nav_qr)
-        navStatistik = findViewById<LinearLayout>(R.id.nav_statistik)
-        navProfil = findViewById<LinearLayout>(R.id.nav_profil)
+        navHome = findViewById(R.id.nav_home)
+        navReward = findViewById(R.id.nav_reward)
+        navQr = findViewById(R.id.nav_qr)
+        navStatistik = findViewById(R.id.nav_statistik)
+        navProfil = findViewById(R.id.nav_profil)
 
         navHome!!.setOnClickListener(this)
         navReward!!.setOnClickListener(this)
@@ -339,19 +339,21 @@ class ProfilActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setNavColor(navId: Int, colorRes: Int, typefaceStyle: Int) {
-        val tab = findViewById<LinearLayout?>(navId)
+        val tab = findViewById<View?>(navId)
         if (tab == null) return
-        for (i in 0..<tab.getChildCount()) {
-            val child = tab.getChildAt(i)
-            if (child is ImageView) {
-                child.setColorFilter(
-                    getResources().getColor(colorRes, getTheme())
-                )
-            } else if (child is TextView) {
-                child.setTextColor(
-                    getResources().getColor(colorRes, getTheme())
-                )
-                child.setTypeface(null, typefaceStyle)
+        if (tab is LinearLayout) {
+            for (i in 0 until tab.childCount) {
+                val child = tab.getChildAt(i)
+                if (child is ImageView) {
+                    child.setColorFilter(
+                        getResources().getColor(colorRes, getTheme())
+                    )
+                } else if (child is TextView) {
+                    child.setTextColor(
+                        getResources().getColor(colorRes, getTheme())
+                    )
+                    child.setTypeface(null, typefaceStyle)
+                }
             }
         }
     }
